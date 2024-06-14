@@ -6,13 +6,45 @@ class Tarea extends Controllers {
     }
 
     // Método para listar una tarea
-    public function tarea($id) {
-        echo "Hola desde tarea con el id: " . $id;
-    }
+
 
     // Método para listar todas las tareas
     public function tareas() {
-        echo "Hola desde tarea";
+        try {
+            $method = $_SERVER['REQUEST_METHOD'];
+            if ($method == "GET") {
+                $data = $this->model->getTareas();
+                $response = array('status' => true, 'data' => $data);
+                jsonResponse($response, 200);
+            } else {
+                $response = array('status' => false, 'msg' => 'Método no permitido');
+                jsonResponse($response, 405);
+            }
+        } catch (Exception $e) {
+            $response = array('status' => false, 'msg' => 'Error en el proceso: ' . $e->getMessage());
+            jsonResponse($response, 500);
+        }
+    }
+
+    public function tarea($id) {
+        try {
+            $method = $_SERVER['REQUEST_METHOD'];
+            if ($method == "GET") {
+                $data = $this->model->getTareaById($id);
+                if (!empty($data)) {
+                    $response = array('status' => true, 'data' => $data);
+                } else {
+                    $response = array('status' => false, 'msg' => 'Tarea no encontrada');
+                }
+                jsonResponse($response, 200);
+            } else {
+                $response = array('status' => false, 'msg' => 'Método no permitido');
+                jsonResponse($response, 405);
+            }
+        } catch (Exception $e) {
+            $response = array('status' => false, 'msg' => 'Error en el proceso: ' . $e->getMessage());
+            jsonResponse($response, 500);
+        }
     }
 
     public function agregarTarea() {

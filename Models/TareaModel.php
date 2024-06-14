@@ -41,8 +41,17 @@ class TareaModel extends Mysql
 
     public function getTareas()
     {
-        $sql = "SELECT id, titulo, descripcion, DATE_FORMAT(datecreated, '%d-%m-%Y') as fechaRegistro FROM tareas WHERE completado != '1' ORDER BY id DESC";
+
+        $sql = "SELECT id, titulo, descripcion, DATE_FORMAT(fechaRegistro, '%d-%m-%Y') as fechaRegistro, completado FROM tareas WHERE completado != '0' ORDER BY id DESC";
         $request = $this->select_all($sql);
+        return $request;
+
+    }
+
+    public function getTareaById($id) {
+        $sql = "SELECT id, titulo, descripcion, DATE_FORMAT(fechaRegistro, '%d-%m-%Y') as fechaRegistro, completado FROM tareas WHERE id = :id";
+        $arrParams = array(":id" => $id);
+        $request = $this->select($sql, $arrParams);
         return $request;
     }
     public function putTarea(int $id, string $titulo, string $descripcion, $completado){
