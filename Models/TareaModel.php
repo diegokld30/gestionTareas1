@@ -42,7 +42,7 @@ class TareaModel extends Mysql
     public function getTareas()
     {
 
-        $sql = "SELECT id, titulo, descripcion, DATE_FORMAT(fechaRegistro, '%d-%m-%Y') as fechaRegistro, completado FROM tareas WHERE completado != '0' ORDER BY id DESC";
+        $sql = "SELECT id, titulo, descripcion, DATE_FORMAT(fechaRegistro, '%d-%m-%Y') as fechaRegistro, completado FROM tareas WHERE completado ORDER BY id DESC";
         $request = $this->select_all($sql);
         return $request;
 

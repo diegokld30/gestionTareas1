@@ -84,9 +84,9 @@ class Tarea extends Controllers {
                         'descripcion' => $strDescripcion,
                         'completado' => $strCompletado
                     );
-                    $response = array('status' => true, 'msg' => 'Datos guardados correctamente', 'data' => $arrTarea);
+                    $response = array('success' => true, 'status' => true, 'msg' => 'Datos guardados correctamente', 'data' => $arrTarea);
                 } else {
-                    $response = array('status' => false, 'msg' => 'El título o descripción ya existe');
+                    $response = array('success' => false, 'status' => false, 'msg' => 'El título o descripción ya existe');
                 }
 
                 $code = 200;
@@ -148,7 +148,7 @@ class Tarea extends Controllers {
                     );
                     $response = array('status' => true , 'msg' => 'Datos actualizados correctamente', 'data' => $arrTarea);
                 }else{
-                    $response = array('status' => true , 'msg' => 'La identificacion o email ya existen');
+                    $response = array('status' => true , 'msg' => 'Titulo o descripcion ya existen');
                 }
                 $code = 200;
             }else{
