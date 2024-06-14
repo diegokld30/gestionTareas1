@@ -1,21 +1,3 @@
-<?php
-$ch = curl_init();
-$urlGetTareas = 'http://localhost/gestionTareasDC1/tarea/tareas';
-
-curl_setopt($ch, CURLOPT_URL, $urlGetTareas);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-$response = curl_exec($ch);
-
-if (curl_errno($ch)) {
-    $error_msg = curl_error($ch);
-    echo "Error al conectarse a la API para obtener tareas: " . $error_msg;
-} else {
-    curl_close($ch);
-    $tareas_data = json_decode($response, true);
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,45 +5,36 @@ if (curl_errno($ch)) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de tareas</title>
-    <!-- Incluye el CSS de Bootstrap 5.3.2 para estilizar la tabla -->
+    <!-- Incluye el CSS de Bootstrap 5.3.2 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Incluye el CSS de DataTables con Bootstrap 5 -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css">
 </head>
 <body>
 <div class="container">
     <h1 class="my-4">Gestión de tareas</h1>
-    <p>Nombre página: <?= isset($data['page_title']) ? htmlspecialchars($data['page_title']) : 'Título no definido'; ?></p>
+    <p>Nombre página: Página principal</p>
 
     <a class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#crearTareaModal" role="button">Crear Tarea</a>
 
     <div>
-        <?php
-        if (isset($tareas_data["data"])) {
-            echo "<h1 class='text-center'>Lista de Tareas</h1>";
-            echo "<div class='table-responsive'>";
-            echo "<table class='table table-striped table-bordered'>";
-            echo "<thead class='thead-dark'>";
-            echo "<tr class='text-center'><th>ID</th><th>Título</th><th>Descripción</th><th>Completado</th><th>Fecha de Registro</th></tr>";
-            echo "</thead>";
-            echo "<tbody>";
-
-            foreach ($tareas_data["data"] as $tarea) {
-                $completado = $tarea["completado"] == 1 ? "Completada" : "Pendiente";
-                echo "<tr>";
-                echo "<td>" . htmlspecialchars($tarea["id"]) . "</td>";
-                echo "<td>" . htmlspecialchars($tarea["titulo"]) . "</td>";
-                echo "<td>" . htmlspecialchars($tarea["descripcion"]) . "</td>";
-                echo "<td>" . $completado . "</td>";
-                echo "<td>" . htmlspecialchars($tarea["fechaRegistro"]) . "</td>";
-                echo "</tr>";
-            }
-
-            echo "</tbody>";
-            echo "</table>";
-            echo "</div>"; // Cierre de table-responsive
-        } else {
-            echo "No se encontraron datos de tareas.";
-        }
-        ?>
+        <h1 class='text-center'>Lista de Tareas</h1>
+        <div class='table-responsive'>
+            <table id='tareasTable' class='table table-striped table-bordered'>
+                <thead class='thead-dark'>
+                <tr class='text-center'>
+                    <th>ID</th>
+                    <th>Título</th>
+                    <th>Descripción</th>
+                    <th>Completado</th>
+                    <th>Fecha de Registro</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- Aquí se insertarán las tareas -->
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
@@ -97,41 +70,15 @@ if (curl_errno($ch)) {
     </div>
 </div>
 
+<!-- Incluye el JS de jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Incluye el JS de DataTables -->
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<!-- Incluye el JS de DataTables con Bootstrap 5 -->
+<script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
 <!-- Incluye el JS de Bootstrap 5.3.2 -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Script para refrescar la página automáticamente cada 60 segundos -->
-<script>
-    setInterval(function(){
-        location.reload();
-    }, 60000); // Refrescar cada 60000 milisegundos (60 segundos)
-
-    document.getElementById('crearTareaForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-
-        const titulo = document.getElementById('titulo').value;
-        const descripcion = document.getElementById('descripcion').value;
-        const completado = document.getElementById('completado').value;
-
-        fetch('http://localhost/gestionTareasDC1/tarea/agregarTarea', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ titulo, descripcion, completado })
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    location.reload(); // Refrescar la página para mostrar la nueva tarea
-                } else {
-                    alert('Error al crear la tarea.');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Error al crear la tarea.');
-            });
-    });
-</script>
+<!-- Incluye el JS personalizado -->
+<script src="Views/js/home.js"></script>
 </body>
 </html>
