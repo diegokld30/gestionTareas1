@@ -45,5 +45,40 @@ class TareaModel extends Mysql
         $request = $this->select_all($sql);
         return $request;
     }
+    public function putTarea(int $id, string $titulo, string $descripcion, $completado){
+        $this->intIdTarea = $id;
+        $this->strTitulo = $titulo;
+        $this->strDescripcion = $descripcion;
+        $this->intCompletado = $completado;
+
+        $sql = "SELECT titulo,descripcion FROM tareas WHERE
+            (titulo = :titulo AND id != :id) OR
+            (titulo = :titulo AND id != :id) AND 
+            completado=1";
+        $arrayData = array(":titulo" => $this->strTitulo,
+            ":descripcion" =>  $this->strDescripcion,
+            ":id" => $this->intIdTarea
+        );
+        $request_tarea = $this->select($sql,$arrayData);
+
+        if(empty($request_tarea)){
+            $sql= "UPDATE tareas SET titulo = :titulo, descripcion = :descripcion, completado = :completado
+                        WHERE id = :id";
+
+            $arrData = array(
+                ":titulo" => $this->strTitulo,
+                ":descripcion" => $this->strDescripcion,
+                ":completado" => $this->intCompletado,
+                ":id" => $this->intIdTarea
+            );
+
+            $request = $this->update($sql,$arrData);
+            return $request;
+        }else{
+            return false;
+        }
+
+
+    }
 }
 ?>
