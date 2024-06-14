@@ -1,4 +1,10 @@
 <?php
+
+    // Habilitar reporte de errores para depuración
+    /*ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);*/
+
     require_once("Config/Config.php");
     require_once("Helpers/Helpers.php");
     $url = !empty($_GET['url']) ? $_GET['url'] : "home/home" ;

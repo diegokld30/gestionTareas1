@@ -8,6 +8,28 @@
             echo json_encode($arrData,true);
         }
     }
+    //Expresion regular para solo texto
+    function testString(string $data)
+    {
+        $re = '/[a-zA-ZÑñÁáÉéÍíÓóÚúÜü\s]+$/m';
+        if(preg_match($re, $data))
+        {
+            return true;
+        }else{
+            return false;
+        }
+    }
+    //Expresion regular para email
+    function testEmail(string $email)
+    {
+        $re = '/[a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,3})$/m';
+        if(preg_match($re, $email))
+        {
+            return true;
+        }else{
+            return false;
+        }
+    }
 
     //Retorna la url del proyecto
 	function base_url()

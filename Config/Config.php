@@ -1,12 +1,12 @@
 <?php
 
-    //define("BASE_URL","http://localhost/gestionTiempo/");
-    const BASE_URL = "http://localhost/gestionTiempo/";
+    //define("BASE_URL","http://localhost/gestionTareas/");
+    const BASE_URL = "http://localhost/gestionTareas/";
 
     //Datos de conexión a Base de Datos
-	const CONNECTION = false;
+	const CONNECTION = true;
 	const DB_HOST = "localhost";
-	const DB_NAME = "gestiontiempo";
+	const DB_NAME = "gestiontareas";
 	const DB_USER = "root";
 	const DB_PASSWORD = "";
 	const DB_CHARSET = "utf8";
