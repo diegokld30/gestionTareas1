@@ -20,6 +20,7 @@
     <button id="marcarPendientes" class="btn btn-warning">Marcar Pendientes</button>
 
     <div>
+
         <h1 class='text-center'>Lista de Tareas</h1>
         <div class='table-responsive'>
             <table id='tareasTable' class='table table-striped table-bordered'>
