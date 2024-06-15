@@ -1,6 +1,7 @@
 **Correr de forma correcta el gestor de tareas**
 
-Hola, este proyecto se desarrollo usando MVC, php puro con POO, JS, HTML, Boostrap5 y DataTable, por los que si o si se uso jQuery, para poder trabajar el datatable y usar sus beneficios. Adicionalmente, se hace uso de Alert2 para que las notificaciones se vean bonitas, y los endpoint generados en PHP se consumen con fetch, ya que fue mucho mas sencillo que trabajar cUrl de PHP
+Hola, este proyecto se desarrollo usando MVC, php puro con POO, JS, HTML, Boostrap5 y DataTable, por los que si o si se uso jQuery, para poder trabajar el datatable y usar sus beneficios. Adicionalmente, se hace uso de Alert2 para que las notificaciones se vean bonitas, y los endpoint generados en PHP se consumen con fetch, ya que fue mucho mas sencillo que trabajar cUrl de PHP.
+Tener en cuenta que no se uso JWT, ni ningun tipo de seguridad.
 
 Pasos:
 
