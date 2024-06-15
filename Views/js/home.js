@@ -35,11 +35,10 @@ function obtenerTareas() {
                     $('#tareasTable').DataTable({
                         "order": [[1, "desc"]],
                         "language": {
-                            "url": "Views/js/es_es.json" // Ruta local al archivo de idioma
+                            "url": "Views/js/es_es.json"
                         }
                     });
 
-                    // Añadir event listeners para los botones de editar y eliminar
                     document.querySelectorAll('.editar-tarea').forEach(button => {
                         button.addEventListener('click', function() {
                             const id = this.dataset.id;
@@ -68,16 +67,16 @@ function obtenerTareas() {
                         marcarTareas(false);
                     });
                 } else {
-                    alert('Error al obtener las tareas.');
+                    Swal.fire('Error', 'Error al obtener las tareas.', 'error');
                 }
             } catch (error) {
                 console.error('Error parsing JSON:', error);
-                alert('Error parsing JSON: ' + error);
+                Swal.fire('Error', 'Error parsing JSON: ' + error, 'error');
             }
         })
         .catch(error => {
             console.error('Fetch error:', error);
-            alert('Fetch error: ' + error);
+            Swal.fire('Error', 'Fetch error: ' + error, 'error');
         });
 }
 
@@ -101,14 +100,16 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    location.reload(); // Refrescar la página para mostrar la nueva tarea
+                    Swal.fire('Éxito', 'Tarea creada correctamente.', 'success').then(() => {
+                        location.reload();
+                    });
                 } else {
-                    alert('Error al crear la tarea.');
+                    Swal.fire('Error', 'Error al crear la tarea.', 'error');
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('Error al crear la tarea.');
+                Swal.fire('Error', 'Error al crear la tarea.', 'error');
             });
     });
 
@@ -130,16 +131,22 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.json())
             .then(data => {
                 if (data.status) {
-                    location.reload(); // Refrescar la página para mostrar los cambios
+                    Swal.fire('Éxito', 'Tarea actualizada correctamente.', 'success').then(() => {
+                        location.reload();
+                    });
                 } else {
-                    alert('Error al actualizar la tarea.');
+                    Swal.fire('Error', 'Error al actualizar la tarea.', 'error');
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('Error al actualizar la tarea.');
+                Swal.fire('Error', 'Error al actualizar la tarea.', 'error');
             });
     });
+
+    setInterval(function(){
+        location.reload();
+    }, 60000);
 });
 
 function editarTarea(id) {
@@ -155,12 +162,12 @@ function editarTarea(id) {
                 const editModal = new bootstrap.Modal(document.getElementById('editarTareaModal'));
                 editModal.show();
             } else {
-                alert('Error al obtener los datos de la tarea.');
+                Swal.fire('Error', 'Error al obtener los datos de la tarea.', 'error');
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('Error al obtener los datos de la tarea.');
+            Swal.fire('Error', 'Error al obtener los datos de la tarea.', 'error');
         });
 }
 
@@ -171,14 +178,16 @@ function eliminarTarea(id) {
         .then(response => response.json())
         .then(data => {
             if (data.status) {
-                location.reload(); // Refrescar la página para mostrar la nueva tarea
+                Swal.fire('Éxito', 'Tarea eliminada correctamente.', 'error').then(() => {
+                    location.reload();
+                });
             } else {
-                alert('Error al eliminar la tarea.');
+                Swal.fire('Error', 'Error al eliminar la tarea.', 'error');
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('Error al eliminar la tarea.');
+            Swal.fire('Error', 'Error al eliminar la tarea.', 'error');
         });
 }
 
@@ -187,7 +196,7 @@ function marcarTareas(completado) {
     const ids = Array.from(checkboxes).map(checkbox => checkbox.dataset.id);
 
     if (ids.length === 0) {
-        alert('No se seleccionaron tareas.');
+        Swal.fire('Advertencia', 'No se seleccionaron tareas.', 'warning');
         return;
     }
 
@@ -198,16 +207,20 @@ function marcarTareas(completado) {
         },
         body: JSON.stringify({ ids, completado })
     })
-        .then(response => response.json())
-        .then(data => {
+        .then(response => response.text())
+        .then(text => {
+            console.log("Response text:", text); // Log the response text
+            const data = JSON.parse(text);
             if (data.status) {
-                location.reload(); // Refrescar la página para mostrar los cambios
+                Swal.fire('Éxito', 'Tareas actualizadas correctamente.', 'success').then(() => {
+                    location.reload();
+                });
             } else {
-                alert('Error al actualizar las tareas.');
+                Swal.fire('Error', 'Error al actualizar las tareas.', 'error');
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('Error al actualizar las tareas.');
+            Swal.fire('Error', 'Error al actualizar las tareas.', 'error');
         });
 }

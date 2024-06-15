@@ -9,11 +9,17 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Incluye el CSS de DataTables con Bootstrap 5 -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css">
+    <!-- Incluye el CSS de SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+</head>
 </head>
 <body>
 <div class="container">
-    <h1 class="my-4">Gestión de tareas</h1>
-    <p>Nombre página: Página principal</p>
+    <header>
+        <h1 class="my-4">Gestión de tareas</h1>
+        <p>Nombre página: Página principal</p>
+    </header>
+
 
     <a class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#crearTareaModal" role="button">Crear Tarea</a>
     <button id="marcarCompletadas" class="btn btn-success">Marcar Completadas</button>
@@ -36,7 +42,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <!-- Aquí se insertarán las tareas -->
+                <!-- Aquí se insertarán las tareas desde el archivo home.js-->
                 </tbody>
             </table>
         </div>
@@ -118,5 +124,8 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Incluye el JS personalizado -->
 <script src="Views/js/home.js"></script>
+<!-- Incluye el JS de SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
 </body>
 </html>
