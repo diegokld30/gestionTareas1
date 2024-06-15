@@ -5,9 +5,6 @@ class Tarea extends Controllers {
         parent::__construct();
     }
 
-    // Método para listar una tarea
-
-
     // Método para listar todas las tareas
     public function tareas() {
         try {
@@ -36,6 +33,30 @@ class Tarea extends Controllers {
                 } else {
                     $response = array('status' => false, 'msg' => 'Tarea no encontrada');
                 }
+                jsonResponse($response, 200);
+            } else {
+                $response = array('status' => false, 'msg' => 'Método no permitido');
+                jsonResponse($response, 405);
+            }
+        } catch (Exception $e) {
+            $response = array('status' => false, 'msg' => 'Error en el proceso: ' . $e->getMessage());
+            jsonResponse($response, 500);
+        }
+    }
+
+    public function marcarTareas() {
+        try {
+            $method = $_SERVER['REQUEST_METHOD'];
+            if ($method == "PUT") {
+                $_PUT = json_decode(file_get_contents('php://input'), true);
+                $ids = $_PUT['ids'];
+                $completado = intval($_PUT['completado']);
+
+                foreach ($ids as $id) {
+                    $this->model->updateTareaStatus($id, $completado);
+                }
+
+                $response = array('status' => true, 'msg' => 'Tareas actualizadas correctamente');
                 jsonResponse($response, 200);
             } else {
                 $response = array('status' => false, 'msg' => 'Método no permitido');
@@ -104,70 +125,71 @@ class Tarea extends Controllers {
         }
     }
 
-    public function actualizar($id){
+    public function actualizarTarea($id) {
         try {
             $method = $_SERVER['REQUEST_METHOD'];
             $response = [];
 
-            if($method == "PUT"){
-                $arrayData = json_decode(file_get_contents('php://input'),true);
-                if(empty($id) or !is_numeric($id)){
-                    $response = array('status' => false , 'msg' => 'Error de datos ');
-                    $code = 400;
-                    jsonResponse($response,$code);
-                    die();
-                }
-                if (empty($arrayData['titulo'])) {
-                    $response = array('status' => false, 'msg' => 'El título es requerido');
+            if ($method == "PUT") {
+                $_PUT = json_decode(file_get_contents('php://input'), true);
+
+                if (empty($_PUT['titulo']) || empty($_PUT['descripcion'])) {
+                    $response = array('status' => false, 'msg' => 'El título y la descripción son requeridos');
                     jsonResponse($response, 200);
                     die();
                 }
 
-                if (empty($arrayData['descripcion'])) {
-                    $response = array('status' => false, 'msg' => 'La descripción es requerida');
-                    jsonResponse($response, 200);
-                    die();
-                }
-                $intId = intval($id);
-                $strTitulo = $arrayData['titulo'];
-                $strDescripcion = $arrayData['descripcion'];
-                $intCompletado = intval($arrayData['completado']);
+                $strTitulo = $_PUT['titulo'];
+                $strDescripcion = $_PUT['descripcion'];
+                $strCompletado = intval($_PUT['completado']);
 
-                $request = $this->model->putTarea(
-                    $intId,
+                $request = $this->model->updateTarea(
+                    $id,
                     $strTitulo,
                     $strDescripcion,
-                    $intCompletado);
+                    $strCompletado
+                );
 
-                if($request){
-                    $arrTarea = array(
-                        'id' => $intId,
-                        'titulo' => $strTitulo,
-                        'descripcion' => $strDescripcion,
-                        'completado' => $intCompletado
-                    );
-                    $response = array('status' => true , 'msg' => 'Datos actualizados correctamente', 'data' => $arrTarea);
-                }else{
-                    $response = array('status' => true , 'msg' => 'Titulo o descripcion ya existen');
+                if ($request) {
+                    $response = array('status' => true, 'msg' => 'Datos actualizados correctamente');
+                } else {
+                    $response = array('status' => false, 'msg' => 'Error al actualizar los datos');
                 }
-                $code = 200;
-            }else{
-                $response = array('status' => false , 'msg' => 'Error en la solicitud '.$method);
-                $code = 400;
 
+                $code = 200;
+            } else {
+                $response = array('status' => false, 'msg' => 'Error en la solicitud ' . $method);
+                $code = 400;
             }
-            jsonResponse($response,$code);
+
+            jsonResponse($response, $code);
             die();
 
-        }catch (Exception $e) {
-            echo "Error en el proceso: ". $e->getMessage();
+        } catch (Exception $e) {
+            $response = array('status' => false, 'msg' => 'Error en el proceso: ' . $e->getMessage());
+            jsonResponse($response, 500);
         }
-        die();
     }
 
-
-    public function eliminarTarea() {
-        // Implementar lógica para eliminar tarea
+    public function eliminarTarea($id) {
+        try {
+            $method = $_SERVER['REQUEST_METHOD'];
+            if ($method == "DELETE") {
+                $request = $this->model->deleteTarea($id);
+                if ($request) {
+                    $response = array('status' => true, 'msg' => 'Tarea eliminada correctamente');
+                } else {
+                    $response = array('status' => false, 'msg' => 'Error al eliminar la tarea');
+                }
+                jsonResponse($response, 200);
+            } else {
+                $response = array('status' => false, 'msg' => 'Método no permitido');
+                jsonResponse($response, 405);
+            }
+        } catch (Exception $e) {
+            $response = array('status' => false, 'msg' => 'Error en el proceso: ' . $e->getMessage());
+            jsonResponse($response, 500);
+        }
     }
 }
 ?>

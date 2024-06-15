@@ -16,6 +16,8 @@
     <p>Nombre página: Página principal</p>
 
     <a class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#crearTareaModal" role="button">Crear Tarea</a>
+    <button id="marcarCompletadas" class="btn btn-success">Marcar Completadas</button>
+    <button id="marcarPendientes" class="btn btn-warning">Marcar Pendientes</button>
 
     <div>
         <h1 class='text-center'>Lista de Tareas</h1>
@@ -23,11 +25,13 @@
             <table id='tareasTable' class='table table-striped table-bordered'>
                 <thead class='thead-dark'>
                 <tr class='text-center'>
+                    <th><input type="checkbox" id="selectAll"></th>
                     <th>ID</th>
                     <th>Título</th>
                     <th>Descripción</th>
                     <th>Completado</th>
                     <th>Fecha de Registro</th>
+                    <th>Acciones</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -38,7 +42,7 @@
     </div>
 </div>
 
-<!-- Modal -->
+<!-- Modal para Crear Tarea -->
 <div class="modal fade" id="crearTareaModal" tabindex="-1" aria-labelledby="crearTareaModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -64,6 +68,39 @@
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary">Crear</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Editar Tarea -->
+<div class="modal fade" id="editarTareaModal" tabindex="-1" aria-labelledby="editarTareaModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editarTareaModalLabel">Editar Tarea</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editarTareaForm">
+                    <input type="hidden" id="editId" name="id">
+                    <div class="mb-3">
+                        <label for="editTitulo" class="form-label">Título</label>
+                        <input type="text" class="form-control" id="editTitulo" name="titulo" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editDescripcion" class="form-label">Descripción</label>
+                        <textarea class="form-control" id="editDescripcion" name="descripcion" rows="3" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editCompletado" class="form-label">Completado</label>
+                        <select class="form-control" id="editCompletado" name="completado" required>
+                            <option value="0">Pendiente</option>
+                            <option value="1">Completada</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
                 </form>
             </div>
         </div>
